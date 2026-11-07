@@ -1,0 +1,76 @@
+<p>departamento works!</p>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-map-fill text-success"></i> Gestión de Departamentos</h2>
+    </div>
+
+    <div class="row">
+        <!-- Formulario -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header text-white" [ngClass]="esEditando ? 'bg-warning text-dark' : 'bg-success'">
+                    <h5 class="card-title mb-0">{{ esEditando ? 'Modificar Departamento' : 'Registrar Departamento' }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Nombre del Departamento</label>
+                            <input type="text" class="form-control" placeholder="Ej. Cauca" required>
+                        </div>
+                        <button type="submit"
+                            [class]="esEditando ? 'btn btn-warning w-100 text-dark' : 'btn btn-success w-100'">
+                            {{ esEditando ? 'Actualizar' : 'Guardar' }}
+                        </button>
+                        <button *ngIf="esEditando" type="button" class="btn btn-secondary w-100 mt-2"
+                            (click)="cancelarEdicion()">
+                            Cancelar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="card-title mb-0"><i class="bi bi-list-stars"></i> Regiones / Departamentos</h5>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped align-middle mb-0">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th>ID_departamento</th>
+                                <th>Nombre</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (dep of listaDepartamentos; track dep.id_departamento) {
+                            <tr>
+                                <td><strong>#{{ dep.id_departamento }}</strong></td>
+                                <td>{{ dep.nombre }}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-warning btn-sm me-2 text-dark"
+                                        (click)="seleccionarDepartamento(dep)"><i
+                                            class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-danger btn-sm" (click)="borrar(dep.id_departamento)"><i
+                                            class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            } @empty {
+                            <tr>
+                                <td colspan="3" class="text-center py-3 text-muted">No hay departamentos agregados.</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

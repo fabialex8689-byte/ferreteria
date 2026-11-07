@@ -1,0 +1,52 @@
+<p>inventario works!</p>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>📦 Control de Inventario</h2>
+        <button class="btn btn-success"><i class="bi bi-plus-circle"></i> Consulta</button>
+        <button class="btn btn-success"><i class="bi bi-plus-circle"></i> Nuevo Producto</button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>id_producto</th>
+                    <th>Nombre</th>
+                    <th>Stock</th>
+                    <th>precio_compra</th>
+                    <th>precio_venta</th>
+                    <th>id_marca</th>
+                    <th>id_usuario</th>
+                    <th>estado</th>
+                    <th>acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (prod of listaProductos; track prod.id_producto) {
+                <tr>
+                    <td>{{ prod.id_producto }}</td>
+                    <td>{{ prod.nombre }}</td>
+                    <td>
+                        <span class="badge" [ngClass]="prod.stock > 5 ? 'bg-success' : 'bg-danger'">
+                            {{ prod.stock }} unidades
+                        </span>
+                    </td>
+                    <td>{{ prod.precio_venta | currency:'COP':'$':'1.0-0' }}</td>
+                    <td>{{ prod.marca }}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm me-2"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-danger btn-sm" (click)="borrar(prod.id_producto)"><i
+                                class="bi bi-trash"></i></button>
+                    </td>
+                </tr>
+                } @empty {
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No hay productos registrados en el inventario.</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

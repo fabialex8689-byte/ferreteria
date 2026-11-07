@@ -1,0 +1,131 @@
+<p>proveedores works!</p>
+
+<div class="container mt-4">
+    <!-- TÍTULO DEL MÓDULO -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-truck text-info"></i> Gestión de Proveedores</h2>
+    </div>
+
+    <div class="row">
+        <!-- 1. FORMULARIO DE REGISTRO / EDICIÓN -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header text-white" [ngClass]="esEditando ? 'bg-warning text-dark' : 'bg-success'">
+                    <h5 class="card-title mb-0">
+                        <i [class]="esEditando ? 'bi bi-pencil-square' : 'bi bi-plus-circle'"></i>
+                        {{ esEditando ? 'Modificar Proveedor' : 'Registrar Proveedor' }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <!-- Razón Social -->
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Razón Social / Empresa</label>
+                            <input type="text" class="form-control" placeholder="Ej. Aceros S.A.S." required>
+                        </div>
+
+                        <!-- Contacto (Teléfono/Celular) -->
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Teléfono de Contacto</label>
+                            <input type="text" class="form-control" placeholder="Ej. 3123456789" required>
+                        </div>
+
+                        <!-- Correo Electrónico -->
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Correo Electrónico</label>
+                            <input type="email" class="form-control" placeholder="Ej. proveedor@correo.com" required>
+                        </div>
+
+                        <!-- Dirección -->
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Dirección Física</label>
+                            <input type="text" class="form-control" placeholder="Ej. Calle 10 #25-30" required>
+                        </div>
+
+                        <!-- Ciudad (id_ciudad relacionado con tu tabla de ciudades) -->
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Ciudad</label>
+                            <select class="form-select" required>
+                                <option value="" disabled selected>Seleccione una ciudad...</option>
+                                <!-- Aquí iterarás tu tabla de ciudades con @for -->
+                                <option value="1">Popayán</option>
+                                <option value="2">Cali</option>
+                            </select>
+                        </div>
+
+                        <hr>
+
+                        <!-- Botón Adaptable (Insertar / Editar) -->
+                        <button type="submit"
+                            [class]="esEditando ? 'btn btn-warning w-100 text-dark' : 'btn btn-success text-white w-100'">
+                            <i [class]="esEditando ? 'bi bi-arrow-clockwise' : 'bi bi-save'"></i>
+                            {{ esEditando ? 'Actualizar Datos' : 'Guardar Proveedor' }}
+                        </button>
+
+                        <!-- Botón para cancelar el estado de edición -->
+                        <button *ngIf="esEditando" type="button" class="btn btn-secondary w-100 mt-2"
+                            (click)="cancelarEdicion()">
+                            Cancelar Edición
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. TABLA DEL LISTADO DE PROVEEDORES -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="card-title mb-0"><i class="bi bi-list-task"></i> Directorio de Aliados Comerciales</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle mb-0">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Razón Social</th>
+                                    <th>Contacto</th>
+                                    <th>Correo</th>
+                                    <th>Dirección</th>
+                                    <th>Ciudad</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (prov of listaProveedores; track prov.id_proveedor) {
+                                <tr>
+                                    <td><strong>#{{ prov.id_proveedor }}</strong></td>
+                                    <td>{{ prov.razon_social }}</td>
+                                    <td>{{ prov.contacto }}</td>
+                                    <td><small>{{ prov.correo }}</small></td>
+                                    <td>{{ prov.direccion }}</td>
+                                    <!-- En tu INNER JOIN de PHP traerás el nombre de la ciudad -->
+                                    <td>{{ prov.ciudad }}</td>
+                                    <td class="text-center">
+                                        <!-- Botón Editar -->
+                                        <button class="btn btn-warning btn-sm me-2 text-dark"
+                                            (click)="seleccionarProveedor(prov)" title="Editar">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <!-- Botón Eliminar -->
+                                        <button class="btn btn-danger btn-sm" (click)="borrar(prov.id_proveedor)"
+                                            title="Eliminar">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                } @empty {
+                                <tr>
+                                    <td colspan="7" class="text-center py-4 text-muted">No hay proveedores registrados
+                                        en el sistema.</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

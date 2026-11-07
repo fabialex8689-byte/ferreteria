@@ -1,0 +1,73 @@
+<p>marca works!</p>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-tags-fill text-warning"></i> Marcas de Productos</h2>
+    </div>
+
+    <div class="row">
+        <!-- Formulario -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header text-white" [ngClass]="esEditando ? 'bg-warning text-dark' : 'bg-success'">
+                    <h5 class="card-title mb-0">{{ esEditando ? 'Modificar Marca' : 'Registrar Marca' }}</h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Nombre del Fabricante / Marca</label>
+                            <input type="text" class="form-control" placeholder="Ej. Dewalt" required>
+                        </div>
+                        <button type="submit"
+                            [class]="esEditando ? 'btn btn-warning w-100 text-dark' : 'btn btn-success w-100'">
+                            {{ esEditando ? 'Actualizar' : 'Guardar' }}
+                        </button>
+                        <button *ngIf="esEditando" type="button" class="btn btn-secondary w-100 mt-2"
+                            (click)="cancelarEdicion()">
+                            Cancelar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="card-title mb-0"><i class="bi bi-bookmark-star"></i> Listado de Marcas</h5>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID_marca</th>
+                                <th>Nombre Comercial</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (mar of listaMarcas; track mar.id_marca) {
+                            <tr>
+                                <td><strong>#{{ mar.id_marca }}</strong></td>
+                                <td>{{ mar.nombre }}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-warning btn-sm me-2 text-dark"
+                                        (click)="seleccionarMarca(mar)"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-danger btn-sm" (click)="borrar(mar.id_marca)"><i
+                                            class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            } @empty {
+                            <tr>
+                                <td colspan="3" class="text-center py-3 text-muted">No hay marcas registradas.</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

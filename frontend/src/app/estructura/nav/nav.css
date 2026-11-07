@@ -1,0 +1,8 @@
+aside {
+    /* O el nombre de la clase de tu menú lateral */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+    /* Permite scroll si la pantalla es muy pequeña */
+}

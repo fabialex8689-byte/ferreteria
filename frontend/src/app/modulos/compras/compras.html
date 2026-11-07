@@ -1,0 +1,160 @@
+<p>compras works!</p>
+
+<div class="container mt-4">
+    <!-- TÍTULO DEL MÓDULO -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-bag-check-fill text-primary"></i> Módulo de Compras (Abastecimiento)</h2>
+    </div>
+
+    <div class="row">
+        <!-- 1. FORMULARIO DINÁMICO (INSERTAR / EDITAR) -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <!-- El color del encabezado cambia dinámicamente según el modo -->
+                <div class="card-header text-white" [ngClass]="esEditando ? 'bg-warning text-dark' : 'bg-success'">
+                    <h5 class="card-title mb-0">
+                        <i [class]="esEditando ? 'bi bi-pencil-square' : 'bi bi-plus-circle'"></i>
+                        {{ esEditando ? 'Modificar Compra #' + compraForm.id_compra : 'Registrar Entrada' }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <!-- Selección de Producto (id_producto) -->
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Producto Adquirido</label>
+                            <select class="form-select" required>
+                                <option value="" disabled selected>Seleccione el producto...</option>
+                                <!-- Aquí iterarás tu inventario -->
+                                <option value="1">Martillo de Uña Dewalt</option>
+                                <option value="2">Bulto de Cemento Argos</option>
+                            </select>
+                        </div>
+
+                        <!-- Selección de Proveedor (id_proveedor) -->
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Proveedor</label>
+                            <select class="form-select" required>
+                                <option value="" disabled selected>Seleccione el proveedor...</option>
+                                <!-- Aquí iterarás tus proveedores -->
+                                <option value="1">Distribuidora Ferretera Central</option>
+                                <option value="2">Aceros y Herramientas S.A.</option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <!-- Cantidad Comprada -->
+                            <div class="col-6 mb-3">
+                                <label class="form-label font-weight-bold">Cantidad</label>
+                                <input type="number" [(ngModel)]="compraForm.cantidad" (input)="calcularValores()" name="cantidad" class="form-control" min="1" required>
+                            </div>
+                            <!-- Precio de Compra (Costo de adquisición de tu BD) -->
+                            <div class="col-6 mb-3">
+                                <label class="form-label font-weight-bold">Costo U.</label>
+                                <input type="number" [(ngModel)]="compraForm.precio_compra" (input)="calcularValores()" name="precio_compra" class=
+                                "form-control" placeholder="0.00" required>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="mt-3 px-1">
+                            <div class="d-flex justify-contend-between mb-2 text-muted small">
+                                <span>Subtotal:</span>
+                                <span class="font-weight-bold text-dark">{{ compraForm.subtotal | currency: 'COP': '$': '1.0-0' }}</span>
+                            </div>
+                            <div class="d-flex justify-contend-between mb-2 text-muted small">
+                                <span>IVA (19%):</span>
+                                <span class="font-weight-bold text-success">{{ compraForm.iva | currency: 'COP': '$': '1.0-0' }}</span>
+                            </div>
+                            <div class="d-flex justify-contend-between mb-2 text-muted small">
+                                <span>Total:</span>
+                                <span class="font-weight-bold text-success">{{ compraForm.total | currency: 'COP': '$': '1.0-0' }}</span>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Botónes Principal Adaptable -->
+                        <div class="mt-3">
+                            <button type="submit"
+                            [class]="esEditando ? 'btn btn-warning w-100 text-dark' : 'btn btn-success w-100'">
+                                <i [class]="esEditando ? 'bi bi-arrow-clockwise' : 'bi bi-save'"></i>
+                                {{ esEditando ? 'Actualizar registro': 'Guardar compra' }}
+                            </button>
+
+                        <!-- Botón de cancelar SOLO aparece si esEditando es verdadero -->
+                            <button *ngIf="esEditando" type="button" class="btn btn-secondary w-100 mt-2"
+                            (click)="cancelarEdicion()">
+                                Cancelar Edición
+                            </button>
+                        </div>    
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. TABLA DEL HISTORIAL (CONSULTA / ELIMINAR) -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="card-title mb-0"><i class="bi bi-list-stars"></i> Historial de Órdenes de Compra</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle mb-0">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>id_compra</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Subtotal</th>
+                                    <th>IVA</th>
+                                    <th>Total</th>
+                                    <th>Fecha_registro</th>
+                                    <th>id_producto</th>
+                                    <th>id_proveedor</th>
+                                    <th>id_usuario</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Aquí iterarás el listado que viene de tu consulta PHP -->
+                                @for (compra of listaCompras; track compra.id_compra) {
+
+                                    <tr>
+                                        <td><strong>#{{ compra.id_compra }}</strong></td>
+                                        <td>{{ compra.producto }}</td>
+                                                         
+                                        <td><span class="badge bg-primary">{{ compra.cantidad }} unds</span></td>
+                                    
+                                        <td class="font-weight-bold">{{ compra.subtotal | currency: 'COP': '$': '1.0-0' }}</td>
+                                        <td class="font-weight-bold text success">{{ compra.iva | currency: 'COP': 'S': '1.0-0' }}</td>
+                                        <td class="font-weight-bold">{{ compra.total | currency: 'COP': '$': '1.0-0' }}</td>
+
+                                        <td><small>{{ compra.fecha_registro }}</small></td>
+                                        <!-- SECCIÓN DE ACCIONES CORREGIDA SIN CIERRES DUPLICADOS -->
+                                        <td class="text-center">
+                                            <button class="btn btn-warning btn-sm me-2 text-dark" (click)="seleccionarCompra(compra)">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                        
+                                            <button class="btn btn-danger btn-sm" (click)="borrar(compra.id_compra)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                } @empty {
+                                    <tr>
+                                        <td colspan="8" class="text-center py-4 text-muted">
+                                            No hay ordenes de compra registradas en el sistema
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
