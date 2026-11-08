@@ -51,13 +51,30 @@
                             <!-- Cantidad -->
                             <div class="col-6 mb-3">
                                 <label class="form-label font-weight-bold">Cantidad</label>
-                                <input type="number" class="form-control" min="1" required>
+                                <input type="number" [(ngModel)]="ventaForm.cantidad" (input)="calcularVentas()" name="cantidad" class="form-control" min="1" required>
                             </div>
                             <!-- Precio Unitario -->
                             <div class="col-6 mb-3">
                                 <label class="form-label font-weight-bold">Precio U.</label>
-                                <input type="number" class="form-control" placeholder="0.00" required>
+                                <input type="number" [(ngModel)]="ventaForm.precio" (input)="calcularVentas()" name="precio" class="form-control" placeholder="0.00" required>
                             </div>
+                        </div>
+
+                        <hr>
+                        <!-- Zona cálculos -->
+                        <div class="mt-3 px-1">
+                            <div class="d-flex justify-content-between mb-2 text-muted small">
+                                <span>Subtotal:</span>
+                                <span class="font-weight-bold text-dark">{{ ventaForm.subtotal | currency: 'COP':'$':'1.0-0' }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2 text-muted small">
+                                <span>IVA (19%):</span>
+                                <span class="font-weight-bold text-dark">{{ ventaForm.iva | currency: 'COP':'$':'1.0-0' }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3 font-weight-bold fs-5 text-dark">
+                                <span>Total:</span>
+                                <span class="font-weight-bold text-success">{{ ventaForm.total | currency: 'COP':'$':'1.0-0' }}</span>
+                            </div>    
                         </div>
 
                         <hr>

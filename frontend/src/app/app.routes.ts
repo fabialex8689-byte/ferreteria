@@ -14,10 +14,14 @@ import { Departamento } from './modulos/departamento/departamento';
 import { Usuarios } from './modulos/usuario/usuarios';
 
 export const routes: Routes = [
+    
+    { path: '', component: Login },
+
     {
-        path: '', component: Main,
-        children:
-        [
+        path: '',
+        component: Main,
+        children: [
+                    
             {path: 'dashboard', component: Dashboard},
             {path: 'clientes', component: Clientes },
             {path: 'compras', component: Compras },
@@ -28,14 +32,13 @@ export const routes: Routes = [
             {path: 'marca', component: Marca },
             {path: 'ciudad', component: Ciudad },
             {path: 'departamento', component: Departamento },
-            {path: 'usuarios', component: Usuarios},
-            {path: '', redirectTo: 'dashboard', pathMatch: 'full'}
+            {path: 'usuario', component: Usuarios },
+            
         ]
             
     },
 
-    {path: 'login', component: Login}
-    
-            
+    { path: '**', redirectTo: '' }
+          
     
 ];
